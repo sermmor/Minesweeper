@@ -42,6 +42,10 @@ public:
 	UPROPERTY()
 	class UMaterialInstance* OrangeMaterial;
 
+	/** Pointer to black material used on mine blocks */
+	UPROPERTY()
+	class UMaterialInstance* BlackMaterial;
+
 	/** Grid that owns us */
 	UPROPERTY()
 	class AMinesweeperBlockGrid* OwningGrid;

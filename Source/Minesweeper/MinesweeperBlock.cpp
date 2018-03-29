@@ -17,11 +17,13 @@ AMinesweeperBlock::AMinesweeperBlock() : MineValue(0), IsMarkedAsMineByPlayer(fa
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlackMaterial;
 		FConstructorStatics()
 			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
 			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, BlackMaterial(TEXT("/Game/Puzzle/Meshes/BlackMaterial.BlackMaterial"))
 		{
 		}
 	};
@@ -46,6 +48,7 @@ AMinesweeperBlock::AMinesweeperBlock() : MineValue(0), IsMarkedAsMineByPlayer(fa
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
 	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
 	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
+	BlackMaterial = ConstructorStatics.BlackMaterial.Get();
 
 	// CREATE NUMBER.
 
@@ -93,17 +96,17 @@ void AMinesweeperBlock::HandleClicked()
 	{
 		bIsActive = true;
 
-		// Destroy Mesh.
-		BlockMesh->DestroyComponent();
-
-		// Show Mine value.
-		ShowMineValue();
-
-		// Tell the Grid
 		if (MineValue == -1)
+		{
+			BlockMesh->SetMaterial(0, BlackMaterial);
 			OwningGrid->SetGameOverState();
+		}
 		else
+		{
+			BlockMesh->DestroyComponent();
+			ShowMineValue();
 			OwningGrid->AddScore();
+		}
 	}
 }
 
